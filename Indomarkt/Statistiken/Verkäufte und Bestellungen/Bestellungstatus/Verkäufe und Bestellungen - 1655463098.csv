@@ -1,0 +1,7 @@
+;Bestellungen nach Status (in %).
+Zahlung eingegangen;0.0027422303473492;
+Bestellung in Bearbeitung;0.0041133455210238;
+Bestellung versandt;0.93053016453382;
+Bestellung storniert;0.059414990859232;
+Zahlung erstattet;0.00091407678244973;
+Warten auf Zahlungseingang von Bank;0.0022851919561243;
