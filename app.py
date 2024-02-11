@@ -251,7 +251,8 @@ class App:
             fvc_above = flour_verkaufuebersicht_chart.loc[
                 flour_verkaufuebersicht_chart['Gesamt Netto'] > barier_number].reset_index(drop=True).copy()
             fvc_above["Nummer"] = fvc_above["Nummer"].astype(str)
-            fvc_above_view = st.button("Show the table")
+            fvc_above_view = st.button("Show the table", key=1)
+
             if fvc_above_view == True:
                 st.text(f"The amount of data: {fvc_above.Name.count()}")
                 st.dataframe(fvc_above[["Datum", "Nummer", "Name", "Gesamt Netto", "Gesamt Brutto"]])
@@ -269,7 +270,8 @@ class App:
             # plotly_fig.to_image() plotly_fig.write_image("plot/plot.png") # still error: FileNotFoundError: [Errno
             # 2] No such file or directory: 'plot/plot.png' st.dataframe(flour_verkaufuebersicht_chart.sort_values(
             # by='Gesamt Netto', ascending=False).reset_index(drop=True))
-            if st.button("Show the table"):
+
+            if st.button("Show the table", key=2):
                 st.dataframe(pie_data.reset_index(drop=True))
 
     def show_fb(self):
@@ -297,9 +299,11 @@ class App:
         st.dataframe(fb_data_wochentag)
 
         # time in senin, selasa, rabu, kamis, jumat, sabtu,
-        fb_data_senin = fb_data[['Wochentag', 'Hari', 'Datum', 'Zeit', 'Nummer', 'Netto', 'Brutto']].loc[
-            fb_data.Hari == 'Monday']
         hari_pilihan = st.selectbox("Choose the day", nama_hari)
+
+        fb_data_senin = fb_data[['Wochentag', 'Hari', 'Datum', 'Zeit', 'Nummer', 'Netto', 'Brutto']].loc[
+            fb_data.Hari == hari_pilihan]
+        
         fb_data_senin_tanggal = fb_data_senin.loc[fb_data.Hari == hari_pilihan]['Datum']
         # jam berapa saja paling banyak terjadi transaksi
         if fb_data_senin_tanggal.drop_duplicates().empty:
