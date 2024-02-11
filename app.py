@@ -111,7 +111,7 @@ class App:
         else:
             st.text(f"The choosen date {str(daterange[0])} - {str(daterange[1])} ")
 
-    show = st.sidebar.selectbox("Choose the data", ["Flour Verkaufübersicht", "Flour Belege", "Erlöse PrestaShop", "PrestaShop Beliebteste Artikel", "Produkt Analyze"])
+    show = st.sidebar.selectbox("Choose the data", ["Produkt Analyze","Flour Verkaufübersicht", "Flour Belege", "Erlöse PrestaShop", "PrestaShop Beliebteste Artikel"])
 
     def __init__(self):
 
