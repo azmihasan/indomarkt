@@ -125,8 +125,8 @@ class App:
             st.text("Data Flour Übersicht telah terupload")
             _self.flour_verkaufuebersicht = pd.read_excel(_self.flour_verkaufuebersicht_upload)
         else:
-            _self.flour_verkaufuebersicht = pd.read_excel(
-                "Indomarkt/Flour/Verkaufsübersicht/export_articlessold_59e7472e57e9fa358c9c2c31__1655561202.xlsx")
+            flour_verkaufuebersicht_path = Path(__file__).parent / 'Indomarkt' / 'Flour' / 'Verkaufsübersicht' / 'export_articlessold_59e7472e57e9fa358c9c2c31__1655561202.xlsx'
+            _self.flour_verkaufuebersicht = pd.read_excel(flour_verkaufuebersicht_path)
 
         flour_verkaufuebersicht = _self.flour_verkaufuebersicht[
             ["Datum", "Nummer", "Name", "Gesamt Netto", "Gesamt Brutto"]].copy()
@@ -142,7 +142,7 @@ class App:
         if _self.flour_topseller_upload is not None:
             _self.flour_topseller = pd.read_excel(_self.flour_topseller_upload)
         else:
-            flour_topseller_path = "Indomarkt/Flour/Topseller/topseller_1655561028_topseller_20150101_20220618.xlsx"
+            flour_topseller_path = Path(__file__).parent / 'Indomarkt' / 'Flour' / 'Topseller' / 'topseller_1655561028_topseller_20150101_20220618.xlsx'
             _self.flour_topseller = pd.read_excel(flour_topseller_path)
 
     # Reconstruct the data of flour receipt
@@ -152,7 +152,7 @@ class App:
         if _self.flour_belege_upload is not None:
             _self.flour_belege = pd.read_excel(_self.flour_belege_upload)
         else:
-            flour_belege_path = "Indomarkt/Flour/Belege/export_documents_1655561149.xlsx"
+            flour_belege_path = Path(__file__).parent / 'Indomarkt' / 'Flour' / 'Belege' / 'export_documents_1655561149.xlsx'
             _self.flour_belege = pd.read_excel(flour_belege_path)
 
         _self.flour_belege['Datum'] = pd.to_datetime(_self.flour_belege['Datum'], utc=True)
@@ -172,7 +172,7 @@ class App:
         if _self.prestashop_beliebt_artikel_upload is not None:
             _self.prestashop_beliebt_artikel = pd.read_excel(_self.prestashop_beliebt_artikel_upload)
         else:
-            prestashop_beliebt_artikel_path = "Indomarkt/Statistiken/Beliebteste Artikel/Beliebteste Artikel - 1655460124.xlsx"
+            prestashop_beliebt_artikel_path = Path(__file__).parent / 'Indomarkt' / 'Statistiken' / 'Beliebteste Artikel' / 'Beliebteste Artikel - 1655460124.xlsx'
             _self.prestashop_beliebt_artikel = pd.read_excel(prestashop_beliebt_artikel_path)
 
         _self.prestashop_beliebt_artikel['Artikel-Nr.'] = _self.prestashop_beliebt_artikel['Artikel-Nr.'].fillna(
@@ -191,8 +191,8 @@ class App:
         if _self.erloese_prestashop_upload is not None:
             _self.erloese_prestashop = pd.read_excel(_self.erloese_prestashop_upload)
         else:
-            _self.erloese_prestashop = pd.read_excel(
-                "Indomarkt/Statistiken/Statistiken Katalog/Erlöse Prestashop.xlsx")
+            erloese_prestashop_path = Path(__file__).parent / 'Indomarkt' / 'Statistiken' / 'Statistiken Katalog' / 'Erlöse Prestashop.xlsx'
+            _self.erloese_prestashop = pd.read_excel(erloese_prestashop_path)
 
         _self.erloese_prestashop['Erlöse'] = _self.erloese_prestashop['Erlöse'].astype(str).str.replace('\xa0€',
                                                                                                         '').str.replace(
