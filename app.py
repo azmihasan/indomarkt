@@ -47,7 +47,7 @@ class App:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.title(f"Welcome {name}")
     st.sidebar.markdown("""
-                        Upload data-data terbaru disini
+                        Upload the newest data here!
                         """)
 
     upload_button_visibility = "visible"
