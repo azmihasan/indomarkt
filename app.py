@@ -419,7 +419,7 @@ class App:
         search_result = pba_data.loc[pba_data['Name'].str.lower().str.contains(search_word, regex=True)]
         st.text(
             f"The searching result with the {search_word} are {search_result.size} products in PrestaShop Beliebt Artikel")
-        _self.search_result_prestashop = st.button("Tunjukkan detail", key='search_result_prestashop')
+        _self.search_result_prestashop = st.button("Show the detail", key='search_result_prestashop')
         if _self.search_result_prestashop:
             st.dataframe(search_result.reset_index(drop=True))
 
@@ -430,7 +430,7 @@ class App:
             .groupby(["Nummer", "Name"]).sum(numeric_only=True)
 
         st.text(f" The searching result with the {search_word} are {search_result_flour.size} products in Flour Verkaufsübersicht")
-        _self.search_result_flour = st.button("Tunjukkan detail", key='search_result_flour')
+        _self.search_result_flour = st.button("Show the detail", key='search_result_flour')
         if _self.search_result_flour:
             search_result_flour['Name'] = search_result_flour.index
             st.dataframe(search_result_flour.reset_index(drop=True))
@@ -447,16 +447,16 @@ class App:
         nummer_list = search_result['Artikel-Nr.'].astype(str).drop_duplicates().to_list()
         produk_detail_nummer = st.selectbox("Choose article nummer", nummer_list)
 
-        st.write("Nomor artikel yang terafiliasi antara PrestaShop dan Flour")
+        st.write("Article number affiliated with PrestaShop and Flour")
         produk_detail_nummer_example = search_result.loc[
             search_result['Name'].fillna("kosong").str.lower().str.replace(",", "").str.match(str(produk_detail))][
             'Artikel-Nr.'].astype(str)
         st.write(produk_detail_nummer_example)
 
         # detail_produk_result_flour = fv_data.loc[(fv_data['Name'].fillna("kosong").str.lower().str.contains(str(produk_detail))) | (fv_data['Nummer'].str.contains(produk_detail_nummer))].reset_index(drop=True)
-        search_parameter1 = fv_data['Name'].fillna("kosong").str.lower().str.contains(str(produk_detail))
+        search_parameter1 = fv_data['Name'].fillna("empty").str.lower().str.contains(str(produk_detail))
         search_parameter2 = fv_data['Nummer'].str.contains(produk_detail_nummer, regex=True)
-        st.text(f"Parameter pencarian yang digunakan {produk_detail} atau {produk_detail_nummer}")
+        st.text(f"Searching Parameter {produk_detail} atau {produk_detail_nummer}")
         if produk_detail_nummer == "0":
             detail_produk_result_flour = fv_data.loc[
                 (search_parameter1) & (search_parameter2)].reset_index(drop=True)
@@ -465,16 +465,16 @@ class App:
                 (search_parameter1) | (search_parameter2)].reset_index(drop=True)
 
         st.text(
-            f" Jumlah Produk yang terjual {detail_produk_result_flour.size} buah dengan total penjualan bersih sebesar {round(detail_produk_result_flour['Gesamt Netto'].sum(), 2)} €")
+            f" Total of sold products {detail_produk_result_flour.size} items with net sales {round(detail_produk_result_flour['Gesamt Netto'].sum(), 2)} €")
 
         # ketersediaan data
 
-        st.text(f"Data tersedia dari {detail_produk_result_flour['Datum'].min()} sampai" +
+        st.text(f"Data is available from {detail_produk_result_flour['Datum'].min()} to" +
                 f" {detail_produk_result_flour['Datum'].max()}")
 
         st.dataframe(detail_produk_result_flour)
 
-        st.header("Diagram berbasis waktu FLour Verkaufübersicht")
+        st.header("Monthly Diagram FLour Verkaufübersicht")
         detail_produk_result_flour['Monatname'] = detail_produk_result_flour['Monat'].sort_values(ascending=False).map(
             {1: 'Januari',
              2: 'Februari',
@@ -489,13 +489,13 @@ class App:
              11: 'November',
              12: 'Desember'
              })
-        if st.button("Penjualan Tahunan"):
+        if st.button("Annual Sales"):
             # inform monthly total of netto and brutto
             fig = px.bar(detail_produk_result_flour, x='Jahr', y=['Gesamt Netto', 'Gesamt Brutto'],
                          title=f"Penjualan produk {produk_detail} di setiap tahun ")
             st.plotly_chart(fig, use_container_width=True)
 
-        if st.button("Penjualan Bulanan"):
+        if st.button("Monthly Sales"):
             fig = px.bar(detail_produk_result_flour, x='Monatname', y=['Gesamt Netto', 'Gesamt Brutto'],
                          title=f"Penjualan produk {produk_detail} bulanan ")
             fig.update_layout(barmode='stack', xaxis={'categoryorder': 'array',
@@ -505,12 +505,12 @@ class App:
             st.plotly_chart(fig, use_container_width=True)
 
         # summary terkait produk bulanan terkait seasonal produk
-        if st.button("Penjualan berdasarkan tanggal"):
+        if st.button("Sales based on the date"):
             fig = px.bar(detail_produk_result_flour, x='Tag', y=['Gesamt Netto', 'Gesamt Brutto'],
-                         title=f"Penjualan produk {produk_detail} berdasarkan tanggal ")
+                         title=f"Product selling {produk_detail}")
             st.plotly_chart(fig, use_container_width=True)
 
-        nama_hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+        nama_hari = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         detail_produk_result_flour['Wochentag'] = detail_produk_result_flour.Datum.dt.dayofweek
         detail_produk_result_flour['Hari'] = detail_produk_result_flour.Datum.dt.dayofweek.map(
             {0: nama_hari[0], 1: nama_hari[1], 2: nama_hari[2], 3: nama_hari[3], 4: nama_hari[4], 5: nama_hari[5],
@@ -519,11 +519,10 @@ class App:
         if st.button("Penjualan Harian"):
             detail_produk_result_flour = detail_produk_result_flour.sort_values(by='Wochentag', ascending=False)
             fig = px.bar(detail_produk_result_flour, x='Hari', y=['Gesamt Netto', 'Gesamt Brutto'],
-                         title=f"Penjualan produk {produk_detail} secara harian ")
+                         title=f"{produk_detail} in Daily Sales")
 
             fig.update_layout(barmode='stack', xaxis={'categoryorder': 'array',
-                                                      'categoryarray': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat',
-                                                                        'Sabtu', 'Minggu']})
+                                                      'categoryarray': nama_hari})
             st.plotly_chart(fig, use_container_width=True)
 
         # memprediksi atau merekomendasi jumlah produk yang sebaiknya dibeli pada pengadaan selanjutnya
