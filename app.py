@@ -113,6 +113,7 @@ class App:
 
     show = st.sidebar.selectbox("Choose the data", ["Produkt Analyze","Flour Verkaufübersicht", "Flour Belege", "Erlöse PrestaShop", "PrestaShop Beliebteste Artikel"])
 
+
     def __init__(self):
 
         pass
